@@ -31,14 +31,17 @@ class CategoriesRepository {
 
   findById(id: string): Category {
     const category = this.categories.find((category) => category.id === id);
-
     return category;
   }
 
   delete(id: string): void {
     const category: any = this.findById(id);
-
     this.categories.splice(category, 1);
+  }
+
+  findByName(name: string): Category {
+    const category = this.categories.find((category) => category.name === name);
+    return category;
   }
 }
 
