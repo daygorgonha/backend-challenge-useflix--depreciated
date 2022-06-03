@@ -1,10 +1,29 @@
-version: "3.7"
+version: "3.9"
 
 services:
+  database:
+    image: postgres
+    container_name: database_useflix
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=useflix
+      - POSTGRES_PASSWORD=useflix
+      - POSTGRES_DB=useflix
+    volumes:
+      - pgdata:/data/postgres
   app:
     build: .
-    container_name: backend-useflix
+    container_name: useflix
     ports:
       - 3333:3333
     volumes:
       - .:/usr/app
+    links:
+      - database
+    depends_on:
+      - database
+volumes:
+  pgdata:
+    driver: local
