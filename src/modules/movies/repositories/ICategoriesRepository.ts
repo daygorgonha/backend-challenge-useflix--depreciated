@@ -10,7 +10,7 @@ interface ICategoriesRepository {
   findById(id: string): Category;
   list(): Category[];
   create({ name, description }: ICreateCategoryDTO): void;
-  delete(category: Category): void;
+  removeById(category: Category): void;
 }
 
 export { ICategoriesRepository };

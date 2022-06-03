@@ -1,50 +1,26 @@
 import { Router } from "express";
 
-import { CategoriesRepository } from "../modules/movies/repositories/CategoriesRepository";
-import { CreateCategoryUseCase } from "../modules/movies/useCases/createCategory/CreateCategoryUseCase";
+import { createCategoryController } from "../modules/movies/useCases/createCategory";
+import { deleteCategoryController } from "../modules/movies/useCases/deleteCategory";
+import { listCategoriesController } from "../modules/movies/useCases/listCategories";
+import { showCategoryController } from "../modules/movies/useCases/showCategory";
 
 const categoriesRoutes = Router();
-const categoriesRepository = new CategoriesRepository();
 
 categoriesRoutes.post("/", (request, response) => {
-  const { name, description } = request.body;
-
-  const createCategoryUseCase = new CreateCategoryUseCase(categoriesRepository);
-
-  createCategoryUseCase.execute({ name, description });
-
-  return response.status(201).send();
+  return createCategoryController.handle(request, response);
 });
 
 categoriesRoutes.get("/", (request, response) => {
-  const all = categoriesRepository.list();
-
-  return response.json(all);
+  return listCategoriesController.handle(request, response);
 });
 
 categoriesRoutes.get("/:id", (request, response) => {
-  const { id } = request.params;
-
-  const category = categoriesRepository.findById(id);
-
-  if (!category) {
-    return response.status(400).json({ error: "Category Not Found" });
-  }
-
-  return response.json(category);
+  return showCategoryController.handle(request, response);
 });
 
 categoriesRoutes.delete("/:id", (request, response) => {
-  const { id } = request.params;
-
-  const category = categoriesRepository.findById(id);
-
-  if (!category) {
-    return response.status(400).json({ error: "Category Not Found" });
-  }
-
-  categoriesRepository.delete(category);
-
-  return response.status(200).send();
+  return deleteCategoryController.handle(request, response);
 });
+
 export { categoriesRoutes };

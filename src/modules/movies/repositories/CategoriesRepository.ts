@@ -33,7 +33,7 @@ class CategoriesRepository implements ICategoriesRepository {
     return category;
   }
 
-  delete(category: any): void {
+  removeById(category: any): void {
     this.categories.splice(category, 1);
   }
 
